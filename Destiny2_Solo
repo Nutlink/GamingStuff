@@ -1,0 +1,33 @@
+If (-NOT ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator"))
+
+{   
+$arguments = "& '" + $myinvocation.mycommand.definition + "'"
+Start-Process powershell -Verb runAs -ArgumentList $arguments
+Break
+}
+
+Write-Host "DESTINY 2 SOLO PLAY" -ForegroundColor Yellow -BackgroundColor Black
+
+Write-Host "Go to Orbit. If you are not in orbit you will continue to matchmake until you leave the instance by going to orbit, changing activities, or entering a new zone." -ForegroundColor Cyan
+
+Write-Host "Press Enter to activate Destiny 2 solo mode." -ForegroundColor Green
+
+Read-Host
+
+$null = New-NetFirewallRule -DisplayName "Destiny2soloTCPOut1" -Direction Outbound -LocalPort 1935,3097,3478-3480 -Protocol TCP -Action Block
+$null = New-NetFirewallRule -DisplayName "Destiny2soloUDPOut1" -Direction Outbound -LocalPort 1935,3097,3478-3480 -Protocol UDP -Action Block
+$null = New-NetFirewallRule -DisplayName "Destiny2soloTCPIn1" -Direction Inbound -LocalPort 1935,3097,3478-3480 -Protocol TCP -Action Block
+$null = New-NetFirewallRule -DisplayName "Destiny2soloUDPIn1" -Direction Inbound -LocalPort 1935,3097,3478-3480 -Protocol UDP -Action Block
+
+Write-Host "Destiny 2 Solo mode activated.  Press Enter to deactivate solo mode." -ForegroundColor Green
+
+Read-Host
+
+Remove-NetFirewallRule -DisplayName "Destiny2soloTCPOut1" 
+Remove-NetFirewallRule -DisplayName "Destiny2soloUDPOut1" 
+Remove-NetFirewallRule -DisplayName "Destiny2soloTCPIn1" 
+Remove-NetFirewallRule -DisplayName "Destiny2soloUDPIn1"
+
+Write-Host "Destiny 2 Solo mode deactivated.  Goodbye!" -ForegroundColor Green
+
+Read-Host "Press Enter to exit."
